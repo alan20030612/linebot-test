@@ -10,10 +10,8 @@ from linebot.models import *
 
 app = Flask(__name__)
  
-# 必須放上自己的Channel Access Token
 line_bot_api = LineBotApi('gYtr5UMAFD36Vac42qz+eBTkqP2nHOM18TVI84YzS7DotN/H90+LBTpdqkk9cyCb/7q6GA/n9NGCykU9zvuwnCoRo2vtN8o5Ztx6yjYplGTJEVqCbHm5ZGPgMsp1fCpyU215mWec6NP+5hLGeVrxygdB04t89/1O/w1cDnyilFU=')
  
-# 必須放上自己的Channel Secret
 handler = WebhookHandler('a6e0746768b18805dc28f81a421c4244')
 
 line_bot_api.push_message('U887507af3a82d184cf6bc1a069aff51f', TextSendMessage(text='你可以開始了'))
@@ -41,6 +39,11 @@ def callback():
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     line_bot_api.reply_message(event.reply_token,message)
+
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    message =event.message.text
+    line_bot_api.reply_message(event.reply_token,TextSendMessage(message))
 
 import os
 if __name__ == "__main__":
